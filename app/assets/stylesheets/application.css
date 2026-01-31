@@ -1,0 +1,101 @@
+/*
+ * This is a manifest file that'll be compiled into application.css, which will include all the files
+ * listed below.
+ *
+ * Any CSS (and SCSS, if configured) file within this directory, lib/assets/stylesheets, or any plugin's
+ * vendor/assets/stylesheets directory can be referenced here using a relative path.
+ *
+ * You're free to add application-wide styles to this file and they'll appear at the bottom of the
+ * compiled file so the styles you add here take precedence over styles defined in any other CSS
+ * files in this directory. Styles in this file should be added after the last require_* statement.
+ * It is generally better to create a new file per style scope.
+ *
+ *= require_tree .
+ *= require_self
+ */
+/* ヘッダー全体 */
+.site-header{
+  display:flex;
+  justify-content: space-between;
+  align-items:center;
+
+  padding: 8px 15px;
+  background-color: rgba(0,0,0,0.7);
+  backdrop-filter: blur(8px);
+  border-bottom:1px solid white;
+
+  position: sticky;
+  top:0;
+  z-index:1000;
+}
+
+/* ロゴ */
+
+.logo-image{
+  height:60px;
+  width:auto;
+ will-change: transform;
+  transform: translateZ(0);
+
+  transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1),
+              box-shadow 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* 右側 */
+.header-right{
+  display:flex;
+  gap:12px;
+}
+
+/* ボタン */
+.header-btn{
+  display:inline-block; /* ←重要：transformを安定させる */
+
+  text-decoration:none;
+  padding:8px 16px;
+  border-radius:8px;
+  font-weight:600;
+
+  transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.header-list{
+  display:flex;
+  gap:12px;
+}
+
+/* 新規登録 */
+.signup{
+  background:#b61616;
+  color:#ffffff;
+}
+
+/* ログイン・ログアウト */
+.login,
+.logout{
+  border:2px solid white;
+  color:#ffffff; /* ←ここだけ修正おすすめ */
+}
+
+/* ホバー */
+.header-btn:hover{
+  transform: translateY(-3px) scale(1.04);
+}
+
+/* 押したとき */
+.header-btn:active{
+  transform: translateY(-1px) scale(1.02);
+}
+
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+}
+
+/* ホバー (小技・モーション)*/
+.logo-image:hover{
+  transform: translateY(-3px) scale(1.04);
+
+  /* 浮いて赤く発光 */
+    filter: drop-shadow(0 0 14px rgba(255,255,255,0.55));
+}

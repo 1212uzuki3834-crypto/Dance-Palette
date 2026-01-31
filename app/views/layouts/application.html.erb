@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= content_for(:title) || "DANCE PALETTE" %></title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+    <script src="https://kit.fontawesome.com/2d0c79d2fd.js" crossorigin="anonymous"></script>
+    <%= yield :head %>
+
+    <link rel="manifest" href="/manifest.json">
+    <link rel="icon" href="/icon.png" type="image/png">
+    <link rel="icon" href="/icon.svg" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="/icon.png">
+    <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+    <%= javascript_importmap_tags %>
+  </head>
+
+  
+<body>
+ <header class="site-header">
+  <%= link_to tweets_path do %>
+   <%= image_tag "logo(1).png", class:"logo-image" %>
+  <% end %>
+  <div class="header-right">
+    <% if user_signed_in? %>
+      <%= button_to 'ログアウト', destroy_user_session_path, method: :delete, class:"header-btn logout" %>
+    <% else %>
+      <%= link_to "新規登録", new_user_registration_path, class:"header-btn signup" %>
+      <%= link_to "ログイン", new_user_session_path, class:"header-btn login" %>
+    <% end %>
+  </div>
+</header>
+ <main>
+ <%# --- フラッシュメッセージを表示 --- %>
+  <% flash.each do |key, value| %>
+    <p class="<%= key %>" style="color: <%= key == 'success' ? 'green' : 'red' %>;">
+      <%= value %>
+    </p>
+  <% end %>
+  <%# --- ここまで --- %>
+
+  <%= yield %>
+ </main>
+</body>
+</html>

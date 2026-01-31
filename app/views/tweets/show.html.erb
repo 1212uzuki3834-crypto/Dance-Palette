@@ -1,0 +1,88 @@
+<h1>GeekTwitter</h1>
+<h3>Tweet詳細</h3>
+<div class="tweet">
+  <p><%= @tweet.body %></p>
+  <p><%= @tweet.created_at %></p>
+  <% if user_signed_in? %>
+     <% if current_user.already_liked?(@tweet) %>
+        <%= link_to tweet_like_path(id: @tweet.id, tweet_id: @tweet.id), data: { turbo_method: :delete } do %>
+             <i class="fas fa-heart"></i><%= @tweet.likes.count %>
+        <% end %>
+     <% else %>
+        <%= link_to tweet_likes_path(id: @tweet.id, tweet_id: @tweet.id), data: { turbo_method: :post }  do %>
+             <i class="far fa-heart"></i><%= @tweet.likes.count %>
+        <% end %>
+     <% end %>
+<% else %>
+    <i class="far fa-heart"></i><%= @tweet.likes.count %>
+<% end %>
+
+  <%= link_to "編集する", edit_tweet_path(@tweet.id) %>
+</div>
+
+<h2>いいねしたユーザー</h2>
+  <% @tweet.liked_users.each do |user| %>
+    <li><%= user.email %></li>
+  <% end %>
+
+
+<!-- YouTube表示 -->
+<iframe
+  width="560"
+  height="315"
+  src="https://www.youtube.com/embed/<%= find_youtube_url(@tweet.youtube_url) %>"
+  title="YouTube video player"
+  frameborder="0"
+  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+  allowfullscreen>
+</iframe>
+
+
+
+<!-- タグ表示 -->
+<% @tweet.tags.each do |tag| %>
+  <span><%= tag.name %></span>
+<% end %>
+
+<p style="color: green"><%= notice %></p>
+<p>
+  <% if @tweet.video? %>
+    <%= link_to @tweet.video.url.to_s do %>
+      <%= video_tag(@tweet.video.to_s, controls: true, style: "width: 100%; max-width: 600px;") %>
+    <% end %>
+  <% else %>
+    <p>動画はありません</p>
+  <% end %>
+</p>
+
+<!-- コメント -->
+<div class="comment-wrapper">
+  <p>コメント一覧</p>
+  <% @comments.each do |c| %>
+    <div>
+      <%= c.user.email unless c.user.blank? %>
+      <br>
+      <%= c.content %>
+    </div>
+      <br>
+  <% end %>
+
+  <% if user_signed_in? %>
+    <%= form_with(model: [@tweet, @comment], local: true) do |f| %>
+      <%= f.text_area :content %>
+      <%= button_tag type: "submit" do %>
+        <i class="far fa-comments"></i> コメントする
+      <% end %>
+    <% end %>
+  <% end %>
+</div>
+
+<%= render @tweet %>
+
+<div>
+  <%= link_to "Edit this tweet", edit_tweet_path(@tweet) %> |
+  <%= link_to "Back to tweets", tweets_path %>
+  <%= button_to "Destroy this tweet", @tweet, method: :delete %>
+</div>
+
+<%= link_to "Tweet一覧に戻る", tweets_path %>

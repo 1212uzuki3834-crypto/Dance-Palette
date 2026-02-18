@@ -1,7 +1,9 @@
 class ApplicationController < ActionController::Base
   # Only allow modern browsers supporting webp images, web push, badges, import maps, CSS nesting, and CSS :has.
   allow_browser versions: :modern
+
   before_action :configure_permitted_parameters, if: :devise_controller?
+  before_action :set_active_storage_url_options
 
   # ログイン後の遷移先（未ログイン時に行こうとしたページがあればそこへ、なければマイページへ）
   def after_sign_in_path_for(resource)
@@ -16,5 +18,14 @@ class ApplicationController < ActionController::Base
     # アカウント編集の時にnameとprofileのストロングパラメータを追加
     devise_parameter_sanitizer.permit(:account_update, keys: [:name, :profile, :image])
   end
-end
 
+  private
+
+  def set_active_storage_url_options
+    ActiveStorage::Current.url_options = {
+      protocol: request.protocol.delete(":"),
+      host: request.host,
+      port: request.optional_port
+    }
+  end
+end

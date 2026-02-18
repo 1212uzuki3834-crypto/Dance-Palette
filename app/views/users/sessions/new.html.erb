@@ -1,26 +1,38 @@
-<h2>Log in</h2>
+<div class="auth-wrapper">
 
-<%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
-  <div class="field">
-    <%= f.label :email %><br />
-    <%= f.email_field :email, autofocus: true, autocomplete: "email" %>
+  <div class="auth-side-nav">
+    <%= link_to "TOP", root_path, class: "auth-top-link" %>
   </div>
 
-  <div class="field">
-    <%= f.label :password %><br />
-    <%= f.password_field :password, autocomplete: "current-password" %>
-  </div>
+  <div class="auth-form">
 
-  <% if devise_mapping.rememberable? %>
-    <div class="field">
-      <%= f.check_box :remember_me %>
-      <%= f.label :remember_me %>
+    <h2>LOGIN</h2>
+
+    <%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
+
+      <div class="field">
+        <%= f.email_field :email, placeholder: "Email", autofocus: true %>
+      </div>
+
+      <div class="field">
+        <%= f.password_field :password, placeholder: "Password" %>
+      </div>
+
+      <div class="remember">
+        <%= f.check_box :remember_me %>
+        <%= f.label :remember_me, "Remember" %>
+      </div>
+
+      <%= f.submit "LOGIN", class: "auth-btn" %>
+
+    <% end %>
+
+    <div class="auth-links">
+      <%= link_to "Sign Up", new_user_registration_path %>
+      |
+      <%= link_to "Forgot your password?", new_user_password_path %>
     </div>
-  <% end %>
 
-  <div class="actions">
-    <%= f.submit "Log in" %>
   </div>
-<% end %>
 
-<%= render "users/shared/links" %>
+</div>

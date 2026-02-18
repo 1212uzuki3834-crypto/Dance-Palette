@@ -1,0 +1,56 @@
+<section class="hero scroll-fade" data-delay="0">
+  <%= image_tag "top.png", class:"hero-image" %>
+</section>
+
+<section class="catch scroll-fade" data-delay="200">
+  <h1>YOU CAN SEE</h1>
+  <h2>VIDEOS<br>AS YOU WANT</h2>
+
+  <%= link_to "View More →", tweets_path, class:"view-more" %>
+</section>
+
+<%= link_to new_tweet_path, class:"post-bar" do %>
+  Post your videos →
+<% end %>
+
+<section class="split scroll-fade" data-delay="400">
+
+  <%= link_to (user_signed_in? ? mypage_path : new_user_session_path),
+            class: "split-card mypage" do %>
+    <h3>My Page</h3>
+    <p>Check your profile</p>
+  <% end %>
+
+  <% if user_signed_in? %>
+  <div class="split-card right" onclick="alert('新しく登録する場合は、一度ログアウトしてください')">
+    <div class="signup-frame">
+      <h3>Sign Up</h3>
+      <p>Create new account</p>
+    </div>
+  </div>
+ <% else %>
+  <%= link_to new_user_registration_path, class:"split-card right" do %>
+    <div class="signup-frame">
+      <h3>Sign Up</h3>
+      <p>Create new account</p>
+    </div>
+  <% end %>
+ <% end %>
+
+
+</section>
+
+<section class="about-section scroll-fade" data-delay="600">
+  <div class="about-inner">
+    <h3>ABOUT US</h3>
+    <p>
+      Share your videos.<br>
+      Watch others grow.<br>
+      This platform is for evryone who loves dance.
+    </p>
+  </div>
+</section>
+
+<section class="practice-section">
+  <h2>Enjoy your practice!</h2>
+</section>

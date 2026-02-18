@@ -1,97 +1,108 @@
-<h1>投稿ページ</h1>
-<%= link_to "新規投稿へ", new_tweet_path %>
+<div class="tweets-index-wrapper">
 
-<% if user_signed_in? %>
-  <%= link_to "マイページへ", user_path(current_user.id) %>
-<% end %>
-
-<%# 動画の表示 #%>
-<div class="tweet">
-  <% @tweets.each do |t| %>
-    <div class="tweet">
-    <% if t.video? %>
-    <%# 1. ローカル動画がある場合は、動画プレイヤーのみを表示 %>
-        <div class="video-container">
-          <%= video_tag t.video.url, controls: true, width: "100%", style: "max-height: 400px;" %>
-        </div>
-    <%# 2. ローカル動画がなく、YouTubeのURLがある場合のみYouTubeを表示 %>
-      <% elsif t.youtube_url.present?&& t.youtube_url.include?("/") %>
-        <iframe width="560" height="315"
-          src="https://www.youtube.com/embed/<%= find_youtube_url(t.youtube_url) %>"
-          title="YouTube video player" frameborder="0"
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-          allowfullscreen>
-        </iframe>
-      <% end %>
-
-    <%# --- 削除ボタンの追加 --- %>
-    <% if user_signed_in? && current_user.id == t.user_id %>
-      <%= link_to "削除する", tweet_path(t.id), data: { turbo_method: :delete, turbo_confirm: "本当に削除しますか？" }, style: "color: red;" %>
-    <% end %>
-
-    <%# --- ユーザー情報・テキスト情報 --- %>
-      <%= link_to t.user.name, user_path(t.user.id) %>
-      <%= t.user.email %>
-      <%= t.genre %>
-      <%= t.purpose %>
-      <%= t.place %>
-
-    <%# --- いいね機能 --- %>
-
-      <% if user_signed_in? %>
-     <% if current_user.already_liked?(t) %>
-        <%= link_to tweet_like_path(id: t.id, tweet_id: t.id), data: { turbo_method: :delete } do %>
-            <i class="fas fa-heart"></i><%= t.likes.count %>
-        <% end %>
-     <% else %>
-        <%= link_to tweet_likes_path(id: t.id, tweet_id: t.id), data: { turbo_method: :post }  do %>
-            <i class="far fa-heart"></i><%= t.likes.count %>
-        <% end %>
-     <% end %>
-     <% else %>
-      <i class="far fa-heart"></i><%= t.likes.count %>
-     <% end %>
-
+  <!-- 左:TOP + タグ -->
+  <aside class="tweets-side-area">
+    <div class="tweets-side-nav">
+      <%= link_to "TOP", root_path, class: "tweets-top-link" %>
     </div>
 
-    <%# --- コメント表示と入力フォーム --- %>
-      <div class="comment-wrapper">
-        <p>コメント一覧</p>
-        <% t.comments.each do |c| %>
-          <div>
-            <%= c.user.name unless c.user.blank? %> :
-            <%= c.content %>
-            <%# --- ここから追加：本人確認と削除リンク --- %>
-            <% if user_signed_in? && c.user_id == current_user.id %>
-              <%= link_to tweet_comment_path(t, c), data: { turbo_method: :delete, turbo_confirm: "コメントを削除しますか？" }, style: "font-size: 0.8em; color: #888; text-decoration: none; margin-left: 10px;" do %>
-                <i class="fas fa-trash"></i> 削除
-             <% end %>
-            <% end %>
-             <%# --- ここまで --- %>
-          </div>
-        <% end %>
+    <!-- TOP の下に余白を作ってからタグ -->
+    <div class="tweets-tag-search">
 
-        <% if user_signed_in? %>
-          <%= form_with(model: [t, t.comments.build], local: true) do |f| %>
-            <%= f.text_area :content %>
-            <%= f.button type: "submit" do %>
-              <i class="far fa-comments"></i> コメントする
-            <% end %>
+      <!-- 検索フォーム(GET /tweets) -->
+      <%= form_tag tweets_path, method: :get, id: "tweets-tag-search-form", class: "tweets-tag-search-form" do %>
+        <div class="tweets-tag-list">
+          <% Tag.order(:name).each do |t| %>
+            <label class="tweets-tag-item">
+              <%= check_box_tag "tag_ids[]", t.id, params[:tag_ids].to_a.include?(t.id.to_s) %>
+              <span><%= t.name %></span>
+            </label>
           <% end %>
-        <% end %>
-      </div>
-  <% end %>
+        </div>
+
+        <div class="tweets-tag-actions">
+          <%= submit_tag "検索", class: "tweets-tag-btn" %>
+        </div>
+      <% end %>
+
+      <!-- タグ追加フォーム(POST /tags) -->
+      <%= form_tag tags_path, method: :post, class: "tweets-tag-add-form" do %>
+        <%= text_field_tag :name, nil, placeholder: "タグ追加", class: "tweets-tag-input" %>
+        <%= submit_tag "追加", class: "tweets-tag-btn" %>
+      <% end %>
+
+    </div>
+  </aside>
+
+  <!-- 右：動画一覧 -->
+  <main class="tweets-main-area">
+    <div class="tweets-video-grid">
+      <% @tweets.each do |t| %>
+        <div class="tweets-video-card">
+
+          <% if t.video? %>
+            <div class="tweets-video-container">
+              <%= video_tag t.video.url, controls: true, width: "100%" %>
+            </div>
+          <% elsif t.youtube_url.present? && t.youtube_url.include?("/") %>
+            <iframe
+              src="https://www.youtube.com/embed/<%= find_youtube_url(t.youtube_url) %>"
+              allowfullscreen>
+            </iframe>
+          <% end %>
+
+          <% if user_signed_in? && current_user.id == t.user_id %>
+            <%= link_to "削除する", tweet_path(t.id),
+                data: { turbo_method: :delete, turbo_confirm: "本当に削除しますか？" },
+                style: "color:red;" %>
+          <% end %>
+
+          <p><%= link_to t.user.name, mypage_path %></p>
+          <p><%= t.genre %> / <%= t.purpose %> / <%= t.place %></p>
+
+          <% if user_signed_in? %>
+            <% if current_user.already_liked?(t) %>
+              <%= link_to tweet_like_path(id: t.id, tweet_id: t.id),
+                  data: { turbo_method: :delete } do %>
+                <i class="far fa-heart"></i><%= t.likes.count %>
+              <% end %>
+            <% else %>
+              <%= link_to tweet_likes_path(id: t.id, tweet_id: t.id),
+                  data: { turbo_method: :post } do %>
+                <i class="far fa-heart"></i><%= t.likes.count %>
+              <% end %>
+            <% end %>
+          <% else %>
+            <i class="far fa-heart"></i><%= t.likes.count %>
+          <% end %>
+
+          <div class="comment-wrapper">
+            <p>コメント一覧</p>
+
+            <% t.comments.each do |c| %>
+              <div>
+                <%= c.user.name unless c.user.blank? %> :
+                <%= c.content %>
+
+                <% if user_signed_in? && c.user_id == current_user.id %>
+                  <%= link_to "削除",
+                      tweet_comment_path(t, c),
+                      data: { turbo_method: :delete } %>
+                <% end %>
+              </div>
+            <% end %>
+
+            <% if user_signed_in? %>
+              <%= form_with(model: [t, t.comments.build], local: true) do |f| %>
+                <%= f.text_area :content %>
+                <%= f.submit "コメントする" %>
+              <% end %>
+            <% end %>
+          </div>
+
+        </div>
+      <% end %>
+    </div>
+  </main>
+
 </div>
-
-<%# --- 検索・タグ追加フォーム --- %>
-<%= form_tag({controller:"tweets",action:"index"}, method: :get) do %>
-  <% Tag.all.each do |t| %>
-    <li><%= check_box :tag_ids, t.name %><%= t.name %></li>
-  <% end %>
-  <%= submit_tag '検索' %>
-<% end %>
-
-<%= form_tag({controller:"tweets",action:"index"}, method: :get) do %>
-  <%= text_field_tag :tag %>
-  <%= submit_tag 'タグを追加' %>
-<% end %>

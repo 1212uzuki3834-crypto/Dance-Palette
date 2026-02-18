@@ -1,0 +1,199 @@
+/* =====================================
+   投稿ページ（new）
+===================================== */
+
+.post-wrapper {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 60px;
+}
+
+.post-title {
+  font-size: 24px;
+  letter-spacing: 0.2em;
+  margin-bottom: 40px;
+  text-align: center;
+  width: 100%;
+}
+
+/* フォーム */
+.post-form {
+  width: 480px;
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.form-label {
+  font-size: 14px;
+}
+
+.form-input,
+.form-select {
+  height: 44px;
+  padding: 8px;
+  font-size: 14px;
+}
+
+.form-file {
+  font-size: 14px;
+}
+
+/* 投稿フォーム内タグ */
+.tag-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px 20px;
+}
+
+.post-tag-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 14px;
+}
+
+/* 送信ボタン */
+.form-submit {
+  margin-top: 20px;
+  margin-bottom: 40px;
+  height: 48px;
+  background: black;
+  color: white;
+  border: none;
+  letter-spacing: 0.2em;
+  cursor: pointer;
+}
+
+
+
+/* =====================================
+   投稿一覧ページ（index）
+===================================== */
+
+.tweets-index-wrapper {
+  display: flex;
+  align-items: flex-start;
+  gap: 40px;
+}
+
+/* ---------- 左サイド ---------- */
+
+.tweets-side-area {
+  width: 260px;
+  flex: 0 0 260px;
+  padding: 60px 40px 0;
+}
+
+/* TOPリンク */
+.tweets-side-nav {
+  margin-bottom: 18px;
+}
+
+.tweets-top-link {
+  font-weight: bold;
+  text-decoration: none;
+  color: black;
+}
+
+.tweets-top-link:hover {
+  opacity: 0.6;
+}
+
+/* タグ検索エリア */
+.tweets-tag-search {
+  margin-top: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.tweets-tag-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  max-height: 45vh;
+  overflow-y: auto;
+  padding-right: 6px;
+}
+
+.tweets-tag-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* ボタン */
+.tweets-tag-btn {
+  padding: 6px 12px;
+  border: none;
+  background: #eee;
+  cursor: pointer;
+  width: fit-content;
+}
+
+.tweets-tag-btn:hover {
+  opacity: 0.85;
+}
+
+/* 検索ボタン専用ラッパー */
+.tweets-tag-actions {
+  display: flex;
+}
+
+/* タグ追加フォーム */
+.tweets-tag-add-form {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.tweets-tag-input {
+  flex: 1;
+  padding: 6px;
+}
+
+
+
+/* ---------- 右メイン ---------- */
+
+.tweets-main-area {
+  flex: 1;
+  min-width: 0; /* レイアウト崩れ防止 */
+}
+
+/* 動画2列 */
+.tweets-video-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  align-items: start;
+}
+
+.tweets-video-card {
+  width: 100%;
+}
+
+/* iframeやvideoがはみ出さない */
+.tweets-video-card iframe,
+.tweets-video-card video {
+  width: 100%;
+  aspect-ratio: 16 / 9;  
+  object-fit: cover;
+  display: block;
+}
+
+.tweet-container{
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}

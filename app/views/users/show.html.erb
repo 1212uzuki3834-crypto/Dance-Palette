@@ -1,46 +1,72 @@
-<h1>users#show</h1>
-<p>名前 : <%= @user.name %></p>
-<p>メールアドレス : <%= @user.email %></p>
-<p>プロフィール : <%= @user.profile %></p>
+<div class="user-wrapper">
 
-<% if current_user.id == @user.id %>
-  <%= link_to "編集する", edit_user_registration_path %>
-<% end %>
+  <!-- 左:PROFILE + ナビ -->
+  <aside class="user-side">
 
-<h2>ユーザーの投稿一覧</h2>
-<% @user.tweets.each do |t| %>
-  <%= t.user.name %>
-  <% if t.youtube_url.present? %>
-    <iframe width="560" height="315"
-      src="https://www.youtube.com/embed/<%= find_youtube_url(t.youtube_url) %>"
-      title="YouTube video player" frameborder="0"
-      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-      allowfullscreen>
-    </iframe>
-  <% else %>
-    <p>URLがありません</p>
-  <% end %>
-<% end %>
+    <div class="profile-box">
+      <h2 class="profile-title">PROFILE</h2>
 
-<!-- 以下はいいね機能を実装している場合-->
-<h2>ユーザーがいいねした投稿一覧</h2>
-<% @user.liked_tweets.each do |t| %>
-  <%= t.user.name %>
-  <% if t.youtube_url.present? %>
-    <iframe width="560" height="315"
-      src="https://www.youtube.com/embed/<%= find_youtube_url(t.youtube_url) %>"
-      title="YouTube video player" frameborder="0"
-      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-      allowfullscreen>
-    </iframe>
-  <% else %>
-    <p>URLがありません</p>
-  <% end %>
-<% end %>
-<!-- ここまで-->
+      <div class="profile-item">
+        <div class="profile-label">User Name:</div>
+        <div class="profile-value"><%= @user.name %></div>
+      </div>
 
-<%= link_to "Tweet一覧に戻る", tweets_path %>
+      <%# 画像の持ち方がアプリで違うので、ここは2パターン用意 %>
+      <div class="profile-item">
+        <div class="profile-label">ICON:</div>
+        <div class="profile-value">
+          <% if @user.respond_to?(:image) && @user.image.present? %>
+            <%= image_tag @user.image.url, class: "profile-icon" %>
+          <% elsif @user.respond_to?(:avatar) && @user.avatar.attached? %>
+            <%= image_tag @user.avatar, class: "profile-icon" %>
+          <% else %>
+            <div class="profile-icon placeholder"></div>
+          <% end %>
+        </div>
+      </div>
 
-<% if @user.image.attached? %>
-     <%= image_tag  @user.image, size: '250x200'%>
-<% end %>
+      <div class="profile-item">
+        <div class="profile-label">Profile:</div>
+        <div class="profile-value"><%= @user.profile %></div>
+      </div>
+
+      <%# もし編集リンクがあるなら %>
+      <% if user_signed_in? && current_user.id == @user.id %>
+        <div class="profile-actions">
+          <%= link_to "Edit", edit_user_registration_path, class: "profile-edit" %>
+        </div>
+      <% end %>
+    </div>
+
+    <nav class="user-nav">
+      <%= link_to "TOP", root_path, class: "user-nav-link" %>
+      <%= link_to "POST", new_tweet_path, class: "user-nav-link" %>
+    </nav>
+
+  </aside>
+
+  <!-- 右：投稿一覧 -->
+  <main class="user-main">
+    <h2 class="user-post-title">ユーザーの投稿一覧</h2>
+
+    <div class="user-video-grid">
+      <% @tweets.each do |t| %>
+        <div class="user-video-card">
+
+          <div class="user-video-container">
+            <% if t.video? %>
+              <%= video_tag t.video.url, controls: true %>
+            <% elsif t.youtube_url.present? && t.youtube_url.include?("/") %>
+              <iframe
+                src="https://www.youtube.com/embed/<%= find_youtube_url(t.youtube_url) %>"
+                allowfullscreen>
+              </iframe>
+            <% end %>
+          </div>
+          <p class="post-user"><%= t.user.name %></p>
+        </div>
+      <% end %>
+    </div>
+  </main>
+
+</div>

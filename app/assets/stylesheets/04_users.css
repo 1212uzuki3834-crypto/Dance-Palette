@@ -1,0 +1,137 @@
+/* マイページ */
+.user-wrapper {
+  display: flex;
+  align-items: flex-start;
+  gap: 60px;
+  padding-top: 30px;
+  padding-left: 60px;
+}
+
+.user-side {
+  width: 260px;
+  flex: 0 0 260px;
+}
+
+.profile-box {
+  margin-bottom: 30px;
+}
+
+.profile-title {
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 12px;
+}
+
+.profile-item {
+  margin-bottom: 10px;
+}
+
+.profile-label {
+  font-size: 12px;
+  opacity: 0.7;
+}
+
+.profile-value {
+  font-size: 14px;
+}
+
+img.profile-icon {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  object-fit: cover;
+  display: block;
+  margin-top: 6px;
+}
+
+.profile-icon.placeholder {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: #eee;
+  margin-top: 6px;
+}
+
+
+.profile-icon.placeholder {
+  background: #eee;
+}
+
+.profile-actions {
+  margin-top: 10px;
+}
+
+.profile-edit {
+  display: inline-block;
+  padding: 6px 12px;
+  background: #eee;
+  border: 1px solid #ccc;
+
+  text-decoration: none;  /* ← 下線を消す */
+  color: #111;
+
+  font-size: 13px;  /* ← 少し小さく */
+  font-weight: 600;
+}
+
+.profile-edit,
+.profile-edit:visited {
+  color: #111;
+}
+
+
+.profile-edit:hover {
+  opacity: 0.8;
+  background: #e2e2e2;
+}
+
+
+.user-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.user-nav-link {
+  font-weight: bold;
+  text-decoration: none;
+  color: #111;
+}
+
+.user-nav-link:visited {
+  color: #111; /* 訪問済みでも紫にしない */
+}
+
+.user-main {
+  flex: 1;
+  min-width: 0;
+}
+
+.user-post-title {
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 16px;
+}
+
+/* もし既存の video-grid を使ってるなら不要だけど、念のため */
+.user-video-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+/* 16:9 比率固定 */
+.user-video-container {
+  position: relative;
+  width: 100%;
+  padding-top: 56.25%; /* ← 16:9 */
+}
+
+.user-video-container iframe,
+.user-video-container video {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}

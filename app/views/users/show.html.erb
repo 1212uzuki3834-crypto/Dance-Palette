@@ -18,12 +18,13 @@
           <% if @user.respond_to?(:image) && @user.image.present? %>
             <%= image_tag @user.image.url, class: "profile-icon" %>
           <% elsif @user.respond_to?(:avatar) && @user.avatar.attached? %>
-            <%= image_tag @user.avatar, class: "profile-icon" %>
+            <%= image_tag url_for(@user.avatar), class: "profile-icon" %>
           <% else %>
             <div class="profile-icon placeholder"></div>
           <% end %>
         </div>
       </div>
+
 
       <div class="profile-item">
         <div class="profile-label">Profile:</div>
@@ -55,7 +56,7 @@
 
           <div class="user-video-container">
             <% if t.video? %>
-              <%= video_tag t.video.url, controls: true %>
+              <%= video_tag url_for(t.video), controls: true %>
             <% elsif t.youtube_url.present? && t.youtube_url.include?("/") %>
               <iframe
                 src="https://www.youtube.com/embed/<%= find_youtube_url(t.youtube_url) %>"

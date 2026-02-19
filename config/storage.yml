@@ -34,6 +34,4 @@ local:
 #   mirrors: [ amazon, google, microsoft ]
 cloudinary:
   service: Cloudinary
-  cloud_name: <%= ENV['CLOUD_NAME'] %>
-  api_key: <%= ENV['CLOUDINARY_API_KEY'] %>
-  api_secret: <%= ENV['CLOUDINARY_API_SECRET'] %>
+CLOUDINARY_URL=cloudinary://561817467738315:_vk3ON5mMb23NzywMEHKwLiVGHM@dnmf9pnxe

@@ -65,6 +65,7 @@ gem 'mimemagic', '~> 0.3.10', require: false
 gem 'dotenv-rails'
 gem 'cloudinary'
 gem 'activestorage-cloudinary-service'
+gem "aws-sdk-s3", require: false
 
 group :production do
   gem 'pg'

@@ -177,7 +177,7 @@ GEM
       net-smtp
     marcel (1.1.0)
     matrix (0.4.3)
-    mimemagic (0.3.10)
+    mimemagic (0.4.3)
       nokogiri (~> 1)
       rake
     mini_magick (5.3.1)
@@ -199,9 +199,9 @@ GEM
     net-smtp (0.5.1)
       net-protocol
     nio4r (2.7.5)
-    nokogiri (1.19.0-x64-mingw-ucrt)
+    nokogiri (1.19.1-x64-mingw-ucrt)
       racc (~> 1.4)
-    nokogiri (1.19.0-x86_64-linux-gnu)
+    nokogiri (1.19.1-x86_64-linux-gnu)
       racc (~> 1.4)
     orm_adapter (0.5.0)
     ostruct (0.6.3)
@@ -376,7 +376,7 @@ DEPENDENCIES
   importmap-rails
   jbuilder
   marcel
-  mimemagic (~> 0.3.10)
+  mimemagic (~> 0.4.3)
   mini_magick
   pg
   puma (>= 5.0)

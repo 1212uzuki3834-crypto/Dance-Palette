@@ -61,7 +61,7 @@ gem 'devise'
 gem 'carrierwave', '~> 2.2'
 gem 'mini_magick'
 gem 'marcel'
-gem 'mimemagic', '~> 0.3.10', require: false
+gem 'mimemagic', '~> 0.4.3', require: false
 gem 'dotenv-rails'
 gem 'cloudinary'
 gem 'activestorage-cloudinary-service'
